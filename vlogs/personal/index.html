@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>vlog app</title>
+        <script>
+            const writeVlog = async () => {
+                const vlogValue = await fetch( "http://localhost:3000/write",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        }, body:
+                            JSON.stringify( { "text": document.getElementById( "vw" ).value } )
+                    }
+                )
+                const res = await vlogValue.json()
+            }
+
+            const vlogs = async () => {
+                const vlogValues = await fetch( "http://localhost:3000/vlogs" )
+                const res = await vlogValues.json()
+                console.log( "This is what your server actually sends:", res )
+                res.map( newText => {
+                    const newVlog = document.createElement( "div" )
+                    console.log( newText )
+                    newVlog.textContent = newText
+                    document.getElementById( "vlgs" ).appendChild( newVlog )
+                } )
+            }
+        </script>
+    </head>
+
+    <body>
+        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div>
+                <textarea name="vlog" id="vw"></textarea>
+                <button onclick="writeVlog()">submit</button>
+            </div>
+            <div id="vlgs">
+                <button onclick="vlogs()">show vlogs</button>
+            </div>
+        </div>
+
+    </body>
+
+</html>

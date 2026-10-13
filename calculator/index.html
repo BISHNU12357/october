@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculator</title>
+        <script>
+            const getElement = () => {
+                const a = document.getElementById( "first" ).value;
+                const b = document.getElementById( "second" ).value;
+                return { a, b }
+            }
+            const sum = async () => {
+                const { a, b } = getElement();
+                const res = await fetch( `http://localhost:3000/add?a=${ a }&b=${ b }` )
+                const json = await res.json();
+                document.getElementById( "ans" ).innerHTML = json.ans
+            }
+            const subtract = async () => {
+                const { a, b } = getElement();
+                const res = await fetch( `http://localhost:3000/sub/${ a }/${ b }` )
+                const json = await res.json();
+                document.getElementById( "ans" ).innerHTML = json.ans
+            }
+            const multiply = async () => {
+                const { a, b } = getElement();
+                const res = await fetch( "http://localhost:3000/mul", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify( { a: a, b: b } )
+                } )
+                const json = await res.json();
+                document.getElementById( "ans" ).innerHTML = json.ans
+            }
+            const devide = async () => {
+                const { a, b } = getElement();
+                const res = await fetch( `http://localhost:3000/devide?a=${ a }&b=${ b }` )
+                const json = await res.json();
+                document.getElementById( "ans" ).innerHTML = json.ans
+            }
+            const count = async () => {
+                const res = await fetch( `http://localhost:3000/count` )
+                const json = await res.json();
+                document.getElementById( "ans" ).innerHTML = json.count
+            }
+        </script>
+    </head>
+
+    <body>
+        <label for="first">
+            Enter the first number
+            <input id="first" type="number">
+        </label><br>
+        <label for="second">
+            Enter the second number
+            <input id="second" type="number">
+        </label><br>
+        <button onclick="sum()" id="add">add</button>
+        <button onclick="subtract()" id="sub">subtract</button>
+        <button onclick="multiply()" id="mul">multiply</button>
+        <button onclick="devide()" id="dev">devide</button>
+        <button onclick="count()" id="count">count</button>
+        <div id="ans">
+
+        </div>
+    </body>
+
+</html>
