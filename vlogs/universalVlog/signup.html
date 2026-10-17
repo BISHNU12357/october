@@ -5,19 +5,28 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sign up</title>
-        <script>
-            const signup = () => {
-                    
-            }
-        </script>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     </head>
 
     <body>
-        <div>
-            <input id="username" type="text" placeholder="Enter your username">
-            <input id="password" type="password" placeholder="Enter your password">
-            <button id="sub" onclick="">submit</button>
+        <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 500px; height: 300px;background-color: aqua; margin-top: 20%; margin-left: 35%; ">
+            <input id="username" type="text" placeholder="Enter your username"><br>
+            <input id="password" type="password" placeholder="Enter your password"><br>
+            <button style="border-radius: 5px;" id="sub" onclick="signup()">sign up</button>
         </div>
+        <script>
+            const username = document.getElementById("username");
+            const password = document.getElementById("password");
+            const signup = async () => {
+                const response = await axios.post("http://localhost:3000/signup", {
+                        username: username.value,
+                        password: password.value
+                    })
+                    username.value = "";
+                    password.value = "";
+                    window.location.href = "signin.html"
+            }
+        </script>
     </body>
 
 </html>

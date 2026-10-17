@@ -4,10 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body>
     <div>
-        <div></div>
+        <div id="landing" style="display: flex; flex-direction: row; justify-content: space-between;">
+            <div id="Notes" style="display: flex; flex-direction: column; justify-content: left;">
+                
+            </div>
+            <div id="wrt" style="display: flex; flex-direction: column; justify-content: center; ">
+                <textarea name="note" id="text" style="width: 500px; height: 500px;" placeholder="write a note"></textarea>
+                <button style="border-radius: 5px; background-color: aqua; height: 50px;" id="sub" onclick="post()">Post</button>
+            </div>
+        </div>
     </div>
+    <script>
+        const Note = document.getElementById("text");
+        const noteDiv = document.getElementById("Notes")
+        const getHeaders = () => ({
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+        });
+        const load = async() => {
+            const response = await axios.get("http://localhost:3000", {headers: getHeaders()})
+            console.log(response);
+            noteDiv.innerHTML = "";
+            response.data.notes.map((unit) => {
+                const p = document.createElement("p")
+                p.textContent = unit.note;
+                noteDiv.appendChild(p)
+            })
+        }
+        const post = async() => {
+            const response = await axios.post("http://localhost:3000/write", {
+                note: Note.value,
+            },{headers: getHeaders()})
+            document.getElementById("text").value = "";
+            load()
+        }
+        load()
+    </script>
 </body>
 </html>
